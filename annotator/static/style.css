@@ -1,0 +1,12 @@
+#openseadragon {
+    height: 100vh;
+    background-color: gray;
+}
+
+.buttons {
+    z-index: 9999;
+}
+
+.btn {
+    margin: 5px;
+}
