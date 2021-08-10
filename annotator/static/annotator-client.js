@@ -22,10 +22,8 @@ const viewer = OpenSeadragon({
     showNavigator: true,
     navigatorPosition: "BOTTOM_RIGHT",
     animationTime: 0.5,
-    autoHideControls: false,
     showFullPageControl: false,
     maxZoomLevel: 5,
-    initialPage: 0,
 });
 
 // init annotorious module
@@ -76,12 +74,12 @@ viewer.addHandler("page", (e) => {
     annotations = [];
 });
 
-// event handlers for buttons
-
-//             // TODO: result will be a new array of annotated items,
-//             // check thru list of raw images again to get check
-//             // -- or --
-//             // append current fn to the annotated items list, and update
+// onclick listener for annotation discard button
+document.getElementById("discardConfirm").onclick = () => {
+    annotations = [];
+    anno.clearAnnotations();
+    clientSaveAnnotation(currentFn, annotations);
+}
 
 function clientSaveAnnotation(currentFn, annotations) {
     // send annotation to server for processing
@@ -95,5 +93,3 @@ function clientSaveAnnotation(currentFn, annotations) {
         alert(err);
     });
 }
-
-// viewer.open({type:'image', url:'/annotator/static/test-img-low.jpeg'})

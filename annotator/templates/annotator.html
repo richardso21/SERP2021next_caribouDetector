@@ -14,11 +14,8 @@ Annotator
 
 <!-- button interface -->
 <div class="buttons position-absolute end-0 d-flex flex-column">
-    <button id="annotate" type="button" class="btn btn-success">Submit</button>
     <button id="discard" type="button" class="btn btn-danger" data-bs-toggle="modal"
-        data-bs-target="#discardModal">Discard</button>
-    <button id="imgsModalTrigger" type="button" class="btn btn-primary" data-bs-toggle="modal"
-        data-bs-target="#imgsModal">Images</button>
+        data-bs-target="#discardModal">Discard All</button>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
         data-bs-target="#helpModal">Help</button>
 </div>
@@ -28,32 +25,15 @@ Annotator
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="discardModalLabel">Clear Annotations</h5>
+                <h5 class="modal-title" id="discardModalLabel">Discard Annotations?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to remove all annotations?
+                Are you sure you want to discard <b>ALL</b> annotations?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="imgsModal" tabindex="-1" aria-labelledby="imgsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="imgsModalLabel">Images</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ul class="list-group">
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="discardConfirm" type="button" class="btn btn-danger">Discard</button>
             </div>
         </div>
     </div>
