@@ -1,5 +1,6 @@
 from flask import Blueprint, json, jsonify
 from flask.helpers import url_for
+from PIL import Image, ImageDraw
 from xml.dom import minidom
 import os, glob
 
@@ -14,15 +15,16 @@ ANNOTATIONS = 'train/annotations'
 MASKS = 'train/masks'
 
 
-def getDir(path):
+def getDir(path, ext=''):
     rawImgsDir = os.path.join(fs.static_folder, path)
     return [
         url_for('files.static', filename=f'{path}/{fn}') 
-        for fn in os.listdir(rawImgsDir)
+        for fn in os.listdir(rawImgsDir) if fn.endswith(ext)
     ]
 
 def getRawImgs():
-    return getDir(RAW_IMGS)
+    # return all valid .JPG images
+    return getDir(RAW_IMGS, '.JPG')
 
 def getAnnotations():
     return getDir(ANNOTATIONS)
@@ -32,25 +34,29 @@ def getAnnotationData(fn):
     with open(os.path.join(fs.static_folder, ANNOTATIONS, fn), 'r') as F:
         return jsonify(json.load(F))
 
-def saveAnnotation(fn, data, genMask=True):
-    new_fn = f'{fn.split(".")[0]}.json'
-    with open(os.path.join(fs.static_folder, ANNOTATIONS, new_fn), 'w') as F:
+def saveAnnotation(stripFn, data, genMask=True):
+    newFn = f'{stripFn}.json'
+    with open(os.path.join(fs.static_folder, ANNOTATIONS, newFn), 'w') as F:
         json.dump(data, F)
     if genMask:
-        generateMask(fn, data)
+        generateMask(stripFn, data)
 
 def getMasks():
     return getDir(MASKS)
 
-def generateMask(fn, data):
-    polygons = []
+def generateMask(stripFn, data):
+    newFn = f'{stripFn}.PNG'
+    dimensions = data.pop(0)['dimensions']
+    # make a new image canvas w/ dimensions
+    img = Image.new('L', (dimensions['x'], dimensions['y']))
+    draw = ImageDraw.Draw(img)
     for annotation in data:
         # extract points from svg for each annotation (fg area)
         doc = minidom.parseString(annotation['target']['selector']['value'])
         points = doc.documentElement.firstChild.getAttribute('points')
-        polygons.append(points.split(' '))
+        # convert string property into list of x,y tuples
+        coords = [tuple(map(float, pt.split(','))) for pt in points.split(' ')]
+        draw.polygon(coords, fill=255)
 
-    # for polygon in polygons:
-    
-    # print(fn, data, polygons)
-    print(polygons)
+    img.save(os.path.join(fs.static_folder, MASKS, newFn))
+    print(f'{newFn} saved')

@@ -18,6 +18,7 @@ def index():
 def saveAnnotation(fn):
     err = None
     if request.method == 'POST':
-        files.saveAnnotation(fn, request.json)
+        stripFn = ''.join(fn.split('.')[:-1])
+        files.saveAnnotation(stripFn, request.json)
         return 'Annotation Saved!'
     return render_template('error.html', err=err)

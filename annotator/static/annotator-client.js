@@ -1,7 +1,7 @@
 // get images from server
 const server = document.getElementById("openseadragon").dataset;
 const sources = JSON.parse(server.urls);
-let currentFn;
+let currentFn, currentDim;
 let annotations = [];
 
 // turn raw img list to usable tilesource obj list
@@ -51,15 +51,19 @@ anno.on("updateAnnotation", (annotation) => {
 
 // openseadragon viewer handlers
 viewer.addHandler("open", (e) => {
+    console.log(e);
     // open + track annotations
     const splt = e.source.url.split("/");
     currentFn = splt[splt.length - 1];
+    currentDim = { dimensions: e.eventSource.source.dimensions };
     fetch(`/files/getAnnotation/${currentFn.split(".")[0] + ".json"}`)
         .then((res) => {
             res.json().then((data) => {
+                // remove dimensions from annotation data
+                data.shift();
                 // display pre-existing annotations and append to tracking arr
-                anno.setAnnotations(data);
                 data.forEach((el) => annotations.push(el));
+                anno.setAnnotations(data);
             });
         })
         .catch((err) => {
@@ -79,10 +83,16 @@ document.getElementById("discardConfirm").onclick = () => {
     annotations = [];
     anno.clearAnnotations();
     clientSaveAnnotation(currentFn, annotations);
-}
+};
 
 function clientSaveAnnotation(currentFn, annotations) {
     // send annotation to server for processing
+    // include dimensions of the image as 0th elem
+    if (annotations.length === 0) {
+        annotations.unshift(currentDim);
+    } else if (!("dimensions" in annotations[0])) {
+        annotations.unshift(currentDim);
+    }
     fetch(`/annotator/saveAnnotation/${currentFn}`, {
         method: "POST",
         body: JSON.stringify(annotations),
