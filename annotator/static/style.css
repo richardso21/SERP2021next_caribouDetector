@@ -10,3 +10,13 @@
 .btn {
     margin: 5px;
 }
+
+#filename {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    padding: .25rem;
+    background-color: #00000080;
+    color: white;
+}

@@ -1,6 +1,6 @@
-from flask import Blueprint, request, redirect
+from flask import Blueprint, request
 from flask.templating import render_template
-import files
+from files import files
 
 annotator = Blueprint(
     'annotator',

@@ -69,6 +69,8 @@ viewer.addHandler("open", (e) => {
         .catch((err) => {
             alert(err);
         });
+    // update filename indicator
+    document.getElementById("filename").innerHTML = currentFn;
 });
 viewer.addHandler("page", (e) => {
     // save once more in case of empty annotation/previous failed saves

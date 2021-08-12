@@ -3,7 +3,7 @@ from flask import Flask, Blueprint
 from flask.templating import render_template
 
 from annotator import annotator
-import files
+from files import files
 
 app = Flask(__name__)
 app.register_blueprint(files.fs)

@@ -8,7 +8,7 @@ fs = Blueprint(
     'files',
     __name__,
     url_prefix='/files',
-    static_folder='workingFiles',
+    static_folder='',
 )
 RAW_IMGS = 'train/rawImages'
 ANNOTATIONS = 'train/annotations'
@@ -27,7 +27,7 @@ def getRawImgs():
     return getDir(RAW_IMGS, '.JPG')
 
 def getAnnotations():
-    return getDir(ANNOTATIONS)
+    return getDir(ANNOTATIONS, '.json')
 
 @fs.route('/getAnnotation/<fn>')
 def getAnnotationData(fn):
@@ -42,7 +42,7 @@ def saveAnnotation(stripFn, data, genMask=True):
         generateMask(stripFn, data)
 
 def getMasks():
-    return getDir(MASKS)
+    return getDir(MASKS, '.PNG')
 
 def generateMask(stripFn, data):
     newFn = f'{stripFn}.PNG'
