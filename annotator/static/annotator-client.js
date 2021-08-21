@@ -7,6 +7,11 @@ let annotations = [];
 // dom selector for subtle overlay
 const overlay = document.getElementById("overlay");
 
+// open help menu onload
+window.onload = () => {
+    document.getElementById("helpButton").click();
+};
+
 // turn raw img list to usable tilesource obj list
 let parsedSources = [];
 for (let i = 0; i < sources.length; i++) {
@@ -57,7 +62,7 @@ anno.on("updateAnnotation", (annotation) => {
 viewer.addHandler("open", (e) => {
     // console.log(e);
     // stop user from skipping images too fast (buggy)
-    overlay.style.display = 'block';
+    overlay.style.display = "block";
     // open + track annotations
     const splt = e.source.url.split("/");
     currentFn = splt[splt.length - 1];
@@ -71,7 +76,7 @@ viewer.addHandler("open", (e) => {
                 data.forEach((el) => annotations.push(el));
                 anno.setAnnotations(data);
                 // reallow pointer events
-                overlay.style.display = 'none';
+                overlay.style.display = "none";
             });
         })
         .catch((err) => {

@@ -18,7 +18,7 @@ Annotator
 <div class="buttons position-absolute end-0 d-flex flex-column">
     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#discardModal">Discard
         All</button>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#helpModal">Help</button>
+    <button type="button" id="helpButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#helpModal">Help</button>
 </div>
 
 <p id="filename" />
@@ -43,14 +43,50 @@ Annotator
     </div>
 </div>
 <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="helpModalLabel">Help</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                TODO
+                <strong>Welcome to the annotator!</strong> Use this module to trace foreground objects over a set of
+                data for the model
+                to train on. Here are some notable information to learn when using the module:
+                <hr>
+                <ul>
+                    <li>
+                        The annotator will look for image files with the extension <code>.JPG</code> (case
+                        sensitive) in the <code>files/train/rawImages</code> directory, relative to the root directory
+                        of this application.
+                        <em>
+                            You can navigate through each image using the arrow keys at the top left of the interface.
+                        </em>
+                    </li>
+                    <hr>
+                    <li>
+                        <strong>
+                            To begin making a new annotation, press and hold the <kbd>Shift</kbd> key, and drag your
+                            cursor along any edge of the object.
+                        </strong>
+                        Continue by clicking along the object, and
+                        double-clicking to enclose the polygon you have created.
+                    </li>
+                    <hr>
+                    <li>
+                        If you need to delete all annotations in an image, click 'Discard All' at the top right.
+                    </li>
+                    <hr>
+                    <li>
+                        New images will be updated onto the annotator UI when you refresh this page.
+                        <strong>
+                            When you are finished, navigate back to the homepage of this web application.
+                        </strong>
+                    </li>
+                </ul>
+                <hr>
+                <em>Happy annotating!</em>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
