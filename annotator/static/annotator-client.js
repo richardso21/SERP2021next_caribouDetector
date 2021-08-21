@@ -4,6 +4,9 @@ const sources = JSON.parse(server.urls);
 let currentFn, currentDim;
 let annotations = [];
 
+// dom selector for subtle overlay
+const overlay = document.getElementById("overlay");
+
 // turn raw img list to usable tilesource obj list
 let parsedSources = [];
 for (let i = 0; i < sources.length; i++) {
@@ -20,6 +23,7 @@ const viewer = OpenSeadragon({
     tileSources: parsedSources,
     sequenceMode: true,
     showNavigator: true,
+    autoHideControls: false,
     navigatorPosition: "BOTTOM_RIGHT",
     animationTime: 0.5,
     showFullPageControl: false,
@@ -51,7 +55,9 @@ anno.on("updateAnnotation", (annotation) => {
 
 // openseadragon viewer handlers
 viewer.addHandler("open", (e) => {
-    console.log(e);
+    // console.log(e);
+    // stop user from skipping images too fast (buggy)
+    overlay.style.display = 'block';
     // open + track annotations
     const splt = e.source.url.split("/");
     currentFn = splt[splt.length - 1];
@@ -64,13 +70,17 @@ viewer.addHandler("open", (e) => {
                 // display pre-existing annotations and append to tracking arr
                 data.forEach((el) => annotations.push(el));
                 anno.setAnnotations(data);
+                // reallow pointer events
+                overlay.style.display = 'none';
             });
         })
         .catch((err) => {
             alert(err);
         });
-    // update filename indicator
-    document.getElementById("filename").innerHTML = currentFn;
+    // update filename indicator with current index / total images
+    document.getElementById("filename").innerHTML = `(${
+        e.eventSource._sequenceIndex + 1
+    } of ${e.eventSource.tileSources.length})   ${currentFn}`;
 });
 viewer.addHandler("page", (e) => {
     // save once more in case of empty annotation/previous failed saves

@@ -9,18 +9,19 @@ Annotator
 <link rel="stylesheet" href="{{ url_for('static', filename='annotorious/annotorious.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('annotator.static', filename='style.css')}}">
 
+<div id="overlay"> Loading... </div>
+
 <!-- osd -->
 <div id="openseadragon" data-urls='{{ urls|tojson }}' />
 
 <!-- button interface -->
 <div class="buttons position-absolute end-0 d-flex flex-column">
-    <button id="discard" type="button" class="btn btn-danger" data-bs-toggle="modal"
-        data-bs-target="#discardModal">Discard All</button>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-        data-bs-target="#helpModal">Help</button>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#discardModal">Discard
+        All</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#helpModal">Help</button>
 </div>
 
-<span id="filename" />
+<p id="filename" />
 
 <!-- modals -->
 <div class="modal fade" id="discardModal" tabindex="-1" aria-labelledby="discardModalLabel" aria-hidden="true">
@@ -35,7 +36,8 @@ Annotator
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="discardConfirm" type="button" class="btn btn-danger" data-bs-dismiss="modal">Discard</button>
+                <button id="discardConfirm" type="button" class="btn btn-danger"
+                    data-bs-dismiss="modal">Discard</button>
             </div>
         </div>
     </div>
